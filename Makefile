@@ -65,8 +65,7 @@ push-docker-ansible-ee:
 	$(DOCKER) --config $(DOCKER_CONFIG) push $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_TAG_LATEST)
 
 .PHONY: docker-ansible-ee
-docker-ansible-ee:
-	login-docker build-docker-ansible-ee push-docker-ansible-ee
+docker-ansible-ee: login-docker build-docker-ansible-ee push-docker-ansible-ee
 
 
 # LINT
