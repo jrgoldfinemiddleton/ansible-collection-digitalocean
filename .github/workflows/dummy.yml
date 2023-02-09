@@ -25,6 +25,8 @@ jobs:
         env:
           ANSIBLE_MOLECULE_ROLE: dummy
           ANSIBLE_MOLECULE_SCENARIO: defaults
-          ANSIBLE_MOLECULE_SECRET: ${{ secrets.ANSIBLE_MOLECULE_SECRET }}
+          # TODO: consider removing the custom group
+          ANSIBLE_MOLECULE_GROUP: dummy_group
+          # TODO: consider removing this vault password if not needed
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
         run: make test
