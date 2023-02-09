@@ -1,0 +1,13 @@
+---
+version: 1
+dependencies:
+  galaxy: requirements.yml
+  python: requirements.txt
+build_arg_defaults:
+  EE_BASE_IMAGE: 'ansible-runner:digitalocean-latest'
+additional_build_steps:
+  append:
+    - RUN echo "#!/bin/sh" > /opt/.ansible-vault.env
+    - RUN echo "echo \$ANSIBLE_VAULT_PASSWORD" >> /opt/.ansible-vault.env
+    - RUN chmod +x /opt/.ansible-vault.env
+    - ENTRYPOINT []

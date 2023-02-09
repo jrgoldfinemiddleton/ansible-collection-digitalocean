@@ -1,0 +1,35 @@
+---
+name: Verification
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint repository
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Conventional Commits validation
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Lint
+        run: make lint
+
+  # TODO: add any post-lint steps
+  verify:
+    runs-on: ubuntu-22.04
+    needs: lint
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0

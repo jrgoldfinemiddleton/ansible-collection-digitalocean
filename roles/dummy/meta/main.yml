@@ -1,0 +1,16 @@
+---
+
+galaxy_info:
+  role_name: dummy
+  namespace: jrgoldfinemiddleton
+  author: Jason Goldfine-Middleton <jrgoldfinemiddleton@gmail.com>
+  description: Manages a dummy DigitalOcean resource
+  company: N/A
+  license: TBD
+  min_ansible_version: '2.12'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
+        - jammy

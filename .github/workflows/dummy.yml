@@ -1,0 +1,30 @@
+---
+name: jrgoldfinemiddleton.digitalocean.dummy
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    paths:
+      - "!roles/dummy/**.md"
+      - "roles/dummy/**"
+      - "Makefile"
+      - ".github/workflows/dummy.yml"
+
+jobs:
+  molecule_defaults:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Run Molecule scenario "defaults"
+        env:
+          ANSIBLE_MOLECULE_ROLE: dummy
+          ANSIBLE_MOLECULE_SCENARIO: defaults
+          ANSIBLE_MOLECULE_SECRET: ${{ secrets.ANSIBLE_MOLECULE_SECRET }}
+          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+        run: make test

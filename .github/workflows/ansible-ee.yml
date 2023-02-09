@@ -1,0 +1,29 @@
+---
+name: Ansible Execution Environment
+
+on:  # yamllint disable-line rule:truthy
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+    paths:
+      - "environment/**"
+      - "Makefile"
+
+jobs:
+  ansible-ee:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build Execution Environment
+        run: |
+          mkdir -p .docker
+          echo '{}' > .docker/config.json
+          make docker-ansible-ee
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
