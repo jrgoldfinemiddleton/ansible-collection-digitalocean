@@ -1,0 +1,51 @@
+---
+driver:
+  name: delegated
+  options:
+    managed: false
+    ansible_connection_options:
+      ansible_connection: local
+      ansible_python_interpreter: python3
+
+platforms:
+  - name: localhost
+    groups:
+      - dummy
+      - ${ANSIBLE_MOLECULE_GROUP}
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_REMOTE_TMP: /tmp/
+  inventory:
+    group_vars:
+      ${ANSIBLE_MOLECULE_GROUP}:
+        molecule_test_lock: digitalocean-dummy-dns-record
+
+scenario:
+  check_sequence:
+    - dependency
+    - prepare
+    - converge
+    - check
+    - cleanup
+
+  converge_sequence:
+    - dependency
+    - prepare
+    - converge
+
+  destroy_sequence:
+    - dependency
+    - cleanup
+
+  test_sequence:
+    - dependency
+    - lint
+    - syntax
+    - prepare
+    - converge
+    - idempotence
+    - side_effect
+    - verify
+    - cleanup

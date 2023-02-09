@@ -1,0 +1,12 @@
+---
+
+- name: Converge
+  hosts: dummy
+
+  roles:
+    - dummy
+
+  tasks:
+    - name: Print value of molecule_test_lock variable
+      debug:
+        var: molecule_test_lock

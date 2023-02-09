@@ -1,0 +1,20 @@
+---
+namespace: jrgoldfinemiddleton
+name: digitalocean
+version: 0.0.0
+readme: README.md
+authors:
+  - Jason Goldfine-Middleton <jrgoldfinemiddleton@gmail.com>
+description: "Manages the lifecycle of Digital Ocean cloud resources"
+license: ["BSD-3-Clause"]
+tags:
+  - cloud
+  - digitalocean
+  - infrastructure
+dependencies: {"community.digitalocean": ">=1.23.0"}
+repository: https://github.com/jrgoldfinemiddleton/ansible-collection-digitalocean
+documentation: https://github.com/jrgoldfinemiddleton/ansible-collection-digitalocean/blob/main/README.md
+homepage: https://github.com/jrgoldfinemiddleton/ansible-collection-digitalocean
+issues: https://github.com/jrgoldfinemiddleton/ansible-collection-digitalocean/issues
+build_ignore:
+  - .DS_Store

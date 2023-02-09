@@ -1,0 +1,50 @@
+---
+name: Release
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches: [main]
+
+jobs:
+  version:
+    name: Generate version and create tag
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Tag version
+        uses: mathieudutour/github-tag-action@v6.1
+        id: tag_version
+        with:
+          tag_prefix: ""
+          custom_release_rules: chore:patch
+
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+
+  build:
+    name: Build and publish
+    needs: version
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build collection package
+        run: make collection-build
+
+      - name: Publish collection package
+        env:
+          ANSIBLE_GALAXY_TOKEN: ${{ secrets.ANSIBLE_GALAXY_TOKEN }}
+        run: make collection-publish
