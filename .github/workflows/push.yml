@@ -7,7 +7,6 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
   version:
-    name: Generate version and create tag
     runs-on: ubuntu-22.04
 
     steps:
@@ -32,7 +31,6 @@ jobs:
           body: ${{ steps.tag_version.outputs.changelog }}
 
   build:
-    name: Build and publish
     needs: version
     runs-on: ubuntu-22.04
 
@@ -43,9 +41,9 @@ jobs:
           fetch-depth: 0
 
       - name: Build collection package
-        run: make collection-build
+        run: make build-collection
 
       - name: Publish collection package
+        run: make build-collection
         env:
           ANSIBLE_GALAXY_TOKEN: ${{ secrets.ANSIBLE_GALAXY_TOKEN }}
-        run: make collection-publish

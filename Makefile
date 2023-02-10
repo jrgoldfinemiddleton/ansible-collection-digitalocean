@@ -64,8 +64,11 @@ push-docker-ansible-ee:
 	$(DOCKER) --config $(DOCKER_CONFIG) push $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_VERSION)
 	$(DOCKER) --config $(DOCKER_CONFIG) push $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_TAG_LATEST)
 
+.PHONY: logout-docker
+	$(DOCKER) --config $(DOCKER_CONFIG) logout $(DOCKER_REGISTRY)
+
 .PHONY: docker-ansible-ee
-docker-ansible-ee: login-docker build-docker-ansible-ee push-docker-ansible-ee
+docker-ansible-ee: login-docker build-docker-ansible-ee push-docker-ansible-ee logout-docker
 
 
 # LINT
@@ -91,15 +94,15 @@ test:
 
 # RELEASE
 
-.PHONY: collection-build
-collection-build:
+.PHONY: build-collection
+build-collection:
 	$(DOCKER_RUN) rm -rf dist && mkdir -p dist
 	$(DOCKER_RUN) sed -i 's/version: 0.0.0/version: $(ANSIBLE_COLLECTION_VERSION)/' galaxy.yml
 	$(DOCKER_RUN) ansible-galaxy collection build . --output-path dist
 	$(DOCKER_RUN) sed -i 's/version: $(ANSIBLE_COLLECTION_VERSION)/version: 0.0.0/' galaxy.yml
 
-.PHONY: collection-publish
-collection-publish: collection-build
+.PHONY: publish-collection
+publish-collection: build-collection
 	$(DOCKER_RUN) ansible-galaxy collection publish dist/$(ANSIBLE_COLLECTION_ARCHIVE_FILENAME) --token $(ANSIBLE_GALAXY_TOKEN)
 	rm -rf dist
 

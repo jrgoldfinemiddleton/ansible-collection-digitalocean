@@ -1,6 +1,4 @@
-.docker.conf
+.docker
 dist
 environment/context
 pb_*.y*ml
-# not sure needed
-__pycache__
