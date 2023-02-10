@@ -22,6 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run Molecule scenario "defaults"
+        run: make test
         env:
           ANSIBLE_MOLECULE_ROLE: dummy
           ANSIBLE_MOLECULE_SCENARIO: defaults
@@ -29,4 +30,3 @@ jobs:
           ANSIBLE_MOLECULE_GROUP: dummy_group
           # TODO: consider removing this vault password if not needed
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
-        run: make test
