@@ -8,5 +8,5 @@
 
   tasks:
     - name: Print value of molecule_test_lock variable
-      debug:
+      ansible.builtin.debug:
         var: molecule_test_lock
