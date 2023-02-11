@@ -1,0 +1,32 @@
+---
+
+- name: Cleanup
+  hosts: localhost
+
+  module_defaults:
+    group/community.digitalocean.all:
+      oauth_token: "{{ digitalocean_oauth_token }}"
+
+  tasks:
+    - name: Confirm existence of semaphore Project
+      community.digitalocean.digital_ocean_project_info:
+      register: reg_semaphore_project
+      retries: 2
+      delay: 10
+      until: digitalocean_dummy_molecule_semaphore in (reg_semaphore_project.data | list | map(attribute='name'))
+
+    - name: Check for existence of marker file claiming semaphore ownership
+      ansible.builtin.stat:
+        path: "{{ digitalocean_dummy_molecule_owner_file }}"
+      register: reg_semaphore_owner_file
+
+    - name: Ensure semaphore Project is cleaned up
+      community.digitalocean.digital_ocean_project:
+        name: "{{ digitalocean_dummy_molecule_semaphore }}"
+        state: absent
+      when: reg_semaphore_owner_file.stat.exists
+
+    - name: Ensure marker file indicating semaphore ownership does not exist
+      ansible.builtin.file:
+        path: "{{ digitalocean_dummy_molecule_owner_file }}"
+        state: absent

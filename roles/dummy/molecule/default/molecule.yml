@@ -20,7 +20,9 @@ provisioner:
   inventory:
     group_vars:
       ${ANSIBLE_MOLECULE_GROUP}:
-        molecule_test_lock: digitalocean-dummy-dns-record
+        digitalocean_oauth_token: ${DO_API_TOKEN}
+        digitalocean_dummy_molecule_semaphore: ansible-collection-jrgoldfinemiddleton-digitalocean-dummy-molecule
+        digitalocean_dummy_molecule_owner_file: /tmp/we-own-the-semaphore-indeed
 
 scenario:
   check_sequence:

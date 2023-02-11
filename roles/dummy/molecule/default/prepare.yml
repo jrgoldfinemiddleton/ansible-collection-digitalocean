@@ -1,0 +1,29 @@
+---
+
+- name: Prepare
+  hosts: localhost
+
+  module_defaults:
+    group/community.digitalocean.all:
+      oauth_token: "{{ digitalocean_oauth_token }}"
+
+  tasks:
+    - name: Wait for non-existence of semaphore Project
+      community.digitalocean.digital_ocean_project_info:
+      register: reg_semaphore_project
+      retries: 4
+      delay: 15
+      until: digitalocean_dummy_molecule_semaphore not in (reg_semaphore_project.data | list | map(attribute='name'))
+
+    - name: Create semaphore Project
+      community.digitalocean.digital_ocean_project:
+        name: "{{ digitalocean_dummy_molecule_semaphore }}"
+        description: 'Semaphore project for jrgoldfinemiddleton.digitalocean.dummy role Molecule test scenario "default"'
+        environment: Development
+        purpose: "Operational/Developer tooling"
+
+    - name: Create marker file indicating semaphore ownership
+      ansible.builtin.file:
+        path: "{{ digitalocean_dummy_molecule_owner_file }}"
+        mode: 0774
+        state: touch
