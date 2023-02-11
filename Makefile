@@ -65,6 +65,7 @@ push-docker-ansible-ee:
 	$(DOCKER) --config $(DOCKER_CONFIG) push $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_TAG_LATEST)
 
 .PHONY: logout-docker
+logout-docker:
 	$(DOCKER) --config $(DOCKER_CONFIG) logout $(DOCKER_REGISTRY)
 
 .PHONY: docker-ansible-ee
