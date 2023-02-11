@@ -10,7 +10,7 @@ on:  # yamllint disable-line rule:truthy
       - ".github/workflows/dummy.yml"
 
 jobs:
-  molecule_defaults:
+  molecule_default:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -21,11 +21,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Molecule scenario "defaults"
+      - name: Run Molecule scenario "default"
         run: make test
         env:
           ANSIBLE_MOLECULE_ROLE: dummy
-          ANSIBLE_MOLECULE_SCENARIO: defaults
+          ANSIBLE_MOLECULE_SCENARIO: default
           # TODO: consider removing the custom group
           ANSIBLE_MOLECULE_GROUP: dummy_group
           # TODO: consider removing this vault password if not needed

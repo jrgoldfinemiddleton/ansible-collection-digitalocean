@@ -1,7 +1,7 @@
 ---
 namespace: jrgoldfinemiddleton
 name: digitalocean
-version: 0.0.0
+version: 0.0.0  # noqa: galaxy[version-incorrect]
 readme: README.md
 authors:
   - Jason Goldfine-Middleton <jrgoldfinemiddleton@gmail.com>
