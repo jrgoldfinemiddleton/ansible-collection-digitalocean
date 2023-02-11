@@ -1,12 +1,12 @@
 ---
 
 - name: Converge
-  hosts: dummy
+  hosts: localhost
 
   roles:
     - dummy
 
   tasks:
-    - name: Print value of molecule_test_lock variable
+    - name: Print value of digitalocean_dummy_molecule_semaphore variable
       ansible.builtin.debug:
-        var: molecule_test_lock
+        var: digitalocean_dummy_molecule_semaphore

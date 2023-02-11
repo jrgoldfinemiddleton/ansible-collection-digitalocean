@@ -2,3 +2,4 @@
 parseable: true
 quiet: false
 use_default_rules: true
+# TODO: enable options validation for dependency collections
