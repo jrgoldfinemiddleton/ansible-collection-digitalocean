@@ -55,7 +55,7 @@ login-docker:
 .PHONY: build-docker-ansible-ee
 build-docker-ansible-ee:
 	$(DOCKER_RUN_BASE) quay.io/ansible/creator-ee bash -c 'pip install git+https://github.com/ansible/ansible-builder.git@devel#egg=ansible-builder; ansible-builder create -f environment/execution-environment.yml -c environment/context; chown -R $(UID):$(GID) environment/context'
-	$(DOCKER) build -f environment/context/Dockerfile -t $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_VERSION) environment/context
+	$(DOCKER) build -f environment/context/Containerfile -t $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_VERSION) environment/context
 	$(DOCKER) tag $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_VERSION) $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_TAG_LATEST)
 
 .PHONY: push-docker-ansible-ee
