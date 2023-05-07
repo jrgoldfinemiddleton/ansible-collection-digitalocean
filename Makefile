@@ -25,14 +25,13 @@ DOCKER_IMAGE_EE ?= $(DOCKER_REGISTRY)/jrgoldfinemiddleton/ansible-collection-$(A
 DOCKER_CONFIG ?= .docker
 DOCKER_MOUNT_SRC := /mnt/src
 DOCKER_HOME ?= /tmp
-DOCKER_BINDS := -v $(CURDIR):$(DOCKER_MOUNT_SRC)
+DOCKER_BINDS := -v $(CURDIR):$(DOCKER_MOUNT_SRC):ro -v /var/run/docker.sock:/var/run/docker.sock
 DOCKER_ENV_ARGS := -e PYTHONPATH=. -e PY_COLORS=$(PY_COLORS) -e ANSIBLE_FORCE_COLOR=$(ANSIBLE_FORCE_COLOR)
 DOCKER_USER :=
 
 ifdef GITHUB_ACTIONS
 	DOCKER_PULL ?= --pull always
 else
-	DOCKER_USER := --user=$(shell id -u):$(shell id -g)
 	DOCKER_PULL ?= --pull missing
 endif
 
@@ -55,7 +54,7 @@ login-docker:
 .PHONY: build-docker-ansible-ee
 build-docker-ansible-ee:
 	$(DOCKER) build -f environment/Dockerfile --build-arg ANSIBLE_RUNNER_VERSION=$(ANSIBLE_RUNNER_VERSION) -t ansible-runner:$(ANSIBLE_COLLECTION_NAME)-latest environment
-	$(DOCKER_RUN_BASE) $(DOCKER_USER) quay.io/ansible/ansible-builder ansible-builder create -f environment/execution-environment.yml -c environment/context
+	$(DOCKER_RUN_BASE) $(DOCKER_USER) python:3.10 bash -c 'pip install git+https://github.com/ansible/ansible-builder.git@devel#egg=ansible-builder; ansible-builder create -f environment/execution-environment.yml -c environment/context'
 	$(DOCKER) build -f environment/context/Dockerfile -t $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_VERSION) environment/context
 	$(DOCKER) tag $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_VERSION) $(DOCKER_IMAGE_EE):$(DOCKER_IMAGE_EE_TAG_LATEST)
 
@@ -90,7 +89,7 @@ lint: lint-yaml lint-ansible
 
 .PHONY: test
 test:
-	$(DOCKER_RUN_MOLECULE) bash -c 'cd $(ANSIBLE_ROLES_PATH)/$(ANSIBLE_MOLECULE_ROLE); molecule test -s $(ANSIBLE_MOLECULE_SCENARIO)'
+	$(DOCKER_RUN_MOLECULE) bash -c 'cd $(ANSIBLE_ROLES_PATH)/$(ANSIBLE_MOLECULE_ROLE); ANSIBLE_VERBOSITY=3 molecule test -s $(ANSIBLE_MOLECULE_SCENARIO)'
 
 
 # RELEASE
