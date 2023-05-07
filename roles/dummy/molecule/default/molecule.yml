@@ -43,7 +43,6 @@ scenario:
 
   test_sequence:
     - dependency
-    - lint
     - syntax
     - prepare
     - converge

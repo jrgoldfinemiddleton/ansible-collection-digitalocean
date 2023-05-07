@@ -1,1 +1,2 @@
+git [platform:rpm]
 rsync [platform:rpm]
