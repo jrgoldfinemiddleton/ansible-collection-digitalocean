@@ -1,0 +1,12 @@
+---
+driver:
+  name: docker
+
+platforms:
+  - name: ubuntu
+    image: ubuntu:22.04
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_REMOTE_TMP: /tmp/
