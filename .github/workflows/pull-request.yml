@@ -21,8 +21,7 @@ jobs:
           fetch-depth: 0
 
       - name: Lint
-        # TODO: remove OR condition after execution environment contains git binary
-        run: make lint || true
+        run: make lint
 
   # TODO: add any post-lint steps
   verify:
