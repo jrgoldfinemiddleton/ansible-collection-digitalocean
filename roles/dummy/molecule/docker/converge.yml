@@ -2,8 +2,6 @@
 
 - name: Converge
   hosts: all
-  # TODO: remove after installing docker client inside EE image
-  gather_facts: false
 
   tasks:
     - name: Print value of ansible_host

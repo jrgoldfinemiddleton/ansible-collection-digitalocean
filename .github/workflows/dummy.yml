@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
-    matrix:
-      scenario:
-        - default
-        - docker
+      matrix:
+        scenario:
+          - default
+          - docker
 
     steps:
       - name: Check out repo
@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Molecule scenario "default"
+      - name: Run Molecule scenario ${{ matrix.scenario }}
         run: make test
         env:
           ANSIBLE_MOLECULE_ROLE: dummy
