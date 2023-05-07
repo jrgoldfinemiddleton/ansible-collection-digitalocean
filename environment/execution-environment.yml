@@ -3,7 +3,7 @@ version: 3
 
 images:
   base_image:
-    name: 'ansible-runner:digitalocean-latest'
+    name: 'quay.io/centos/centos:stream8'
 
 dependencies:
   python_interpreter:
